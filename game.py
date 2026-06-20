@@ -174,7 +174,11 @@ def parse_coord(token):
         return None
     letters = "".join(ch for ch in token if ch.isalpha())
     digits = "".join(ch for ch in token if ch.isdigit())
+    # Reject: no letter, no digit, multi-letter, or extra characters
     if len(letters) != 1 or not digits:
+        return None
+    # Ensure no trailing garbage: token must be exactly letters+digits in either order
+    if letters + digits != token and digits + letters != token:
         return None
     col = ord(letters) - ord("a")
     try:
